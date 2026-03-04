@@ -1,76 +1,88 @@
-Reddit RAG Chatbot
+# Reddit RAG Chatbot
 
-Chatbot RAG (Retrieval-Augmented Generation) basé sur des conversations Reddit, exposé via FastAPI avec un frontend HTML/CSS/JS.
+RAG (Retrieval-Augmented Generation) chatbot built on Reddit conversations, exposed through a FastAPI backend and a lightweight HTML/CSS/JS frontend.
 
-Ce projet démontre une architecture RAG modulaire, scalable et prête au déploiement.
+This project demonstrates a modular, production-ready RAG architecture with multi-LLM support and Docker deployment.
 
-Features
+---
 
-Pipeline RAG complet (Embedding → Vector Search → Context Injection → LLM)
+## Features
 
-Support multilingue (paraphrase-multilingual-MiniLM-L12-v2)
+- Full RAG pipeline (Embedding → Vector Search → Context Injection → LLM)
+- Multilingual embeddings (`paraphrase-multilingual-MiniLM-L12-v2`)
+- Multiple LLM providers:
+  - Ollama (local)
+  - OpenAI
+  - Anthropic
+  - Groq
+- Reranking support
+- Response caching
+- Built-in rate limiting
+- REST API (FastAPI)
+- Static frontend interface
+- Docker deployment ready
+- Unit and integration tests
 
-Support multi-LLM : Ollama, OpenAI, Anthropic, Groq
+---
 
-Reranking pour améliorer la pertinence
+## Architecture
 
-Cache pour réduire la latence
-
-Rate limiting intégré
-
-API REST FastAPI
-
-Frontend statique léger
-
-Déploiement Docker
-
-Tests + lint + type checking
-
-Architecture
-Indexation (offline)
+### Offline Indexing
 Reddit CSV
-   ↓
-Nettoyage & chunking
-   ↓
+↓
+Cleaning & chunking
+↓
 Embeddings (SentenceTransformers)
-   ↓
+↓
 ChromaDB (Vector Store)
-Inférence (online)
+
+
+### Online Inference
+
+
 User question
-   ↓
+↓
 Embedding
-   ↓
+↓
 Similarity search (Top-K)
-   ↓
+↓
 Context injection
-   ↓
+↓
 LLM generation
-   ↓
+↓
 Response
 
-Architecture en couches :
+
+Layered architecture:
+
 
 API (FastAPI)
-   ↓
+↓
 Services
-   ↓
+↓
 Core (RAG components)
-   ↓
+↓
 Vector DB + LLM
-Project Structure
+
+
+---
+
+## Project Structure
+
+
 Projet_NLP/
 │
 ├── api/
-│   ├── main.py
-│   ├── routes/
-│   └── schemas/
+│ ├── main.py
+│ ├── routes/
+│ └── schemas/
 │
 ├── src/
-│   ├── config/
-│   ├── core/
-│   ├── services/
-│   ├── models/
-│   └── utils/
+│ ├── config/
+│ ├── core/
+│ ├── services/
+│ ├── models/
+│ └── utils/
 │
 ├── frontend/
 ├── scripts/
@@ -78,11 +90,18 @@ Projet_NLP/
 ├── data/
 ├── tests/
 └── docs/
-Installation
-Clone
+
+
+---
+
+## Installation
+
+### Clone the repository
+
+
 git clone https://github.com/Mouhammadou-DIA/Projet_NLP.git
 cd Projet_NLP
-Virtual environment
+Create virtual environment
 
 Linux / Mac:
 
@@ -95,10 +114,10 @@ python -m venv venv
 venv\Scripts\activate
 Install dependencies
 pip install -r requirements.txt
-Environment variables
+Configure environment variables
 cp .env.example .env
 
-Example configuration:
+Example .env:
 
 API_HOST=0.0.0.0
 API_PORT=8000
@@ -108,12 +127,12 @@ LLM_MODEL=llama3.1:8b
 
 EMBEDDING_MODEL=paraphrase-multilingual-MiniLM-L12-v2
 CHROMA_PERSIST_DIRECTORY=./data/vector_db
-Prepare Data
+Data Preparation
 python scripts/prepare_data.py
 python scripts/index_conversations.py
 Run the Application
 
-Start API:
+Start the API:
 
 python run_api.py
 
@@ -121,7 +140,7 @@ API documentation:
 
 http://localhost:8000/docs
 
-Start frontend (new terminal):
+Start the frontend (in a new terminal):
 
 python run_frontend.py
 
@@ -133,7 +152,7 @@ Chat endpoint
 curl -X POST http://localhost:8000/api/v1/chat/ \
 -H "Content-Type: application/json" \
 -d '{
-  "message": "Que penses-tu de l’IA ?",
+  "message": "What do you think about AI?",
   "use_llm": true,
   "n_results": 5,
   "temperature": 0.7,
@@ -144,12 +163,12 @@ curl http://localhost:8000/api/v1/health/
 Docker Deployment
 docker-compose -f docker/docker-compose.yml up -d
 
-Logs:
+View logs:
 
 docker-compose -f docker/docker-compose.yml logs -f
 Development
 
-Install dev dependencies:
+Install development dependencies:
 
 pip install -e ".[dev]"
 
@@ -175,6 +194,10 @@ Create a feature branch
 
 Commit your changes
 
-Push to your branch
+Push your branch
 
 Open a Pull Request
+
+Author
+
+Mouhammadou DIA
