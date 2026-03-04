@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit RAG Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">Reddit RAG</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-tab="chat">
+                    <span class="nav-icon">💬</span>
+                    <span>Chat</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="search">
+                    <span class="nav-icon">🔍</span>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="stats">
+                    <span class="nav-icon">📊</span>
+                    <span>Statistics</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-stats">
+                <h4>Quick Stats</h4>
+                <div class="stat-item">
+                    <span class="stat-value" id="total-conversations">56,297</span>
+                    <span class="stat-label">Conversations</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">~2s</span>
+                    <span class="stat-label">Response Time</span>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="tech-badges">
+                    <span class="badge groq">Groq</span>
+                    <span class="badge llama">Llama 3.1</span>
+                    <span class="badge rag">RAG</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Reddit RAG Chatbot</h1>
+                    <p>Powered by 56,000+ Reddit conversations</p>
+                </div>
+                <div class="header-right">
+                    <div class="settings-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="use-llm" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Use AI (Groq)</span>
+                    </div>
+                    <div class="sources-control">
+                        <label for="n-sources">Sources:</label>
+                        <input type="range" id="n-sources" min="1" max="10" value="5">
+                        <span id="sources-value">5</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Chat Container -->
+            <div class="chat-container" id="chat-tab">
+                <div class="messages-container" id="messages">
+                    <div class="welcome-message">
+                        <div class="welcome-icon"></div>
+                        <h2>Welcome to Reddit RAG Chatbot!</h2>
+                        <p>Ask me anything in French or English. I'll find relevant conversations from Reddit to help you.</p>
+                        <div class="example-questions">
+                            <h4>Try asking:</h4>
+                            <div class="examples-grid">
+                                <button class="example-btn" onclick="setExample('Quel téléphone me recommandes-tu ?')">
+                                    Quel téléphone acheter ?
+                                </button>
+                                <button class="example-btn" onclick="setExample('Je me sens triste aujourd\'hui')">
+                                    Je me sens triste
+                                </button>
+                                <button class="example-btn" onclick="setExample('How do I make friends?')">
+                                    How to make friends?
+                                </button>
+                                <button class="example-btn" onclick="setExample('What are the best video games?')">
+                                    Best video games?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea
+                            id="message-input"
+                            placeholder="Type your message here..."
+                            rows="1"
+                            onkeydown="handleKeyDown(event)"
+                        ></textarea>
+                        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+                            <span class="send-icon">➤</span>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <span class="hint">Press Enter to send, Shift+Enter for new line</span>
+                        <span class="status" id="status"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Tab -->
+            <div class="search-container hidden" id="search-tab">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search conversations...">
+                    <button class="search-btn" onclick="searchConversations()">Search</button>
+                </div>
+                <div class="search-results" id="search-results">
+                    <p class="search-placeholder">Enter a query to search through Reddit conversations</p>
+                </div>
+            </div>
+
+            <!-- Stats Tab -->
+            <div class="stats-container hidden" id="stats-tab">
+                <div class="stats-grid" id="stats-grid">
+                    <!-- Stats will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loading">
+        <div class="loader"></div>
+        <p>Generating response...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

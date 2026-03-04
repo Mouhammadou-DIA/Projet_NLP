@@ -1,0 +1,288 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reddit-rag-chatbot"
+version = "1.0.0"
+description = "A RAG-based chatbot for Reddit conversations with multilingual support"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "NLP Project Team"}
+]
+keywords = [
+    "rag",
+    "chatbot",
+    "nlp",
+    "reddit",
+    "embeddings",
+    "vector-search",
+    "llm",
+    "fastapi",
+    "gradio"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+dependencies = [
+    "fastapi>=0.115.2",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.5.3",
+    "pydantic-settings>=2.1.0",
+    "sentence-transformers>=2.3.1",
+    "chromadb>=0.4.22",
+    "torch>=2.2.0",
+    "numpy<2.0.0",
+    "ollama>=0.1.6",
+    "httpx>=0.25.2",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+    "loguru>=0.7.2",
+    "tenacity>=8.2.3",
+    "cachetools>=5.3.2",
+    "groq",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.4",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.23.3",
+    "pytest-mock>=3.12.0",
+    "httpx>=0.25.2",
+    "ruff>=0.1.11",
+    "mypy>=1.8.0",
+    "pre-commit>=3.6.0",
+    "black>=24.1.0",
+    "isort>=5.13.2",
+]
+monitoring = [
+    "prometheus-client>=0.19.0",
+    "opentelemetry-api>=1.22.0",
+    "opentelemetry-sdk>=1.22.0",
+    "opentelemetry-instrumentation-fastapi>=0.43b0",
+]
+cache = [
+    "redis>=5.0.1",
+    "aioredis>=2.0.1",
+]
+all = [
+    "reddit-rag-chatbot[dev,monitoring,cache]",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/reddit-rag-chatbot"
+Documentation = "https://github.com/your-org/reddit-rag-chatbot/docs"
+Repository = "https://github.com/your-org/reddit-rag-chatbot"
+Issues = "https://github.com/your-org/reddit-rag-chatbot/issues"
+
+[project.scripts]
+rag-api = "run_api:main"
+rag-ui = "run_ui:main"
+rag-prepare = "scripts.prepare_data:main"
+rag-index = "scripts.index_conversations:main"
+rag-benchmark = "scripts.benchmark:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "api*", "ui*", "scripts*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.yaml", "*.yml"]
+
+# =============================================================================
+# Ruff Configuration
+# =============================================================================
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+    "ARG",    # flake8-unused-arguments
+    "SIM",    # flake8-simplify
+    "TCH",    # flake8-type-checking
+    "PTH",    # flake8-use-pathlib
+    "ERA",    # eradicate
+    "PL",     # Pylint
+    "RUF",    # Ruff-specific rules
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+    "B905",   # zip without strict parameter
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value comparison
+    "PLW0603", # global statement (intentional singleton pattern)
+    "PLR0915", # too many statements
+    "ERA001",  # commented-out code (useful for optional configs)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG", "PLR2004", "PLC0415", "SIM105", "F841", "E722", "PTH123"]
+"scripts/*" = ["PLR2004"]
+"api/*" = ["ARG001", "ARG002", "B904", "E402"]
+"api/schemas/*" = ["RUF012"]
+"src/models/*" = ["RUF012"]
+"src/core/llm_handler.py" = ["PLC0415", "ARG002"]
+"src/core/cache.py" = ["PLC0415"]
+"src/core/reranker.py" = ["PLC0415"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "api", "ui"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# =============================================================================
+# MyPy Configuration
+# =============================================================================
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "."
+explicit_package_bases = true
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = false
+warn_no_return = true
+follow_imports = "silent"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "chromadb.*",
+    "sentence_transformers.*",
+    "gradio.*",
+    "streamlit.*",
+    "ollama.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "src.core.cache",
+    "src.core.conversation_memory",
+    "src.core.embeddings",
+    "src.core.vector_store",
+    "src.core.llm_handler",
+    "src.services.chatbot_service",
+]
+disable_error_code = ["assignment", "arg-type", "attr-defined", "index", "return-value", "var-annotated"]
+
+# =============================================================================
+# Pytest Configuration
+# =============================================================================
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "-q",
+    "--strict-markers",
+    "--strict-config",
+    "-v",
+    "--tb=short",
+]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+asyncio_mode = "auto"
+
+# =============================================================================
+# Coverage Configuration
+# =============================================================================
+[tool.coverage.run]
+source = ["src", "api"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "if typing.TYPE_CHECKING:",
+]
+fail_under = 40
+show_missing = true
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# =============================================================================
+# Black Configuration (backup if not using ruff format)
+# =============================================================================
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | data
+)/
+'''
+
+# =============================================================================
+# isort Configuration (backup if not using ruff)
+# =============================================================================
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["src", "api", "ui"]
+skip_gitignore = true

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "context": "What kind of phone do you have?",
+    "response": "I have a Pixel. It's pretty great. Much better than what I had before.",
+    "full_text": "Question: What kind of phone do you have?\nRéponse: I have a Pixel. It's pretty great. Much better than what I had before."
+  },
+  {
+    "id": 2,
+    "context": "I'm feeling sad today",
+    "response": "Don't be sad! Things will get better. I'm here if you need to talk.",
+    "full_text": "Question: I'm feeling sad today\nRéponse: Don't be sad! Things will get better. I'm here if you need to talk."
+  },
+  {
+    "id": 3,
+    "context": "How do I make friends?",
+    "response": "Join clubs or activities you enjoy. You'll naturally meet people with similar interests!",
+    "full_text": "Question: How do I make friends?\nRéponse: Join clubs or activities you enjoy. You'll naturally meet people with similar interests!"
+  },
+  {
+    "id": 4,
+    "context": "I just got a new job!",
+    "response": "Congratulations! That's awesome news! I hope you love it!",
+    "full_text": "Question: I just got a new job!\nRéponse: Congratulations! That's awesome news! I hope you love it!"
+  },
+  {
+    "id": 5,
+    "context": "What's your favorite movie?",
+    "response": "I really enjoyed Inception. The concept was mind-blowing!",
+    "full_text": "Question: What's your favorite movie?\nRéponse: I really enjoyed Inception. The concept was mind-blowing!"
+  }
+]

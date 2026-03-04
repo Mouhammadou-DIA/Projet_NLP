@@ -1,0 +1,65 @@
+# ============================================================
+# REDDIT RAG CHATBOT - PRODUCTION DEPENDENCIES
+# ============================================================
+
+# ==================== CORE FRAMEWORK ====================
+fastapi>=0.115.2              # Modern web framework
+uvicorn[standard]>=0.27.0     # ASGI server
+gunicorn>=21.2.0              # Production WSGI/ASGI server (needed for Render)
+pydantic>=2.5.3               # Data validation
+pydantic-settings>=2.1.0      # Settings management
+
+# ==================== RAG & ML ====================
+sentence-transformers==2.3.1  # Embeddings
+chromadb==0.4.22             # Vector database
+numpy<2.0.0                  # chromadb 0.4.22 incompatible with numpy 2.x
+# PyTorch CPU-only (much smaller than CUDA version)
+# For GPU support, install manually: pip install torch --index-url https://download.pytorch.org/whl/cu121
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+
+# ==================== LLM (Optional) ====================
+ollama==0.1.6                # Local LLM integration
+# openai==1.7.2              # OpenAI API (uncomment if needed)
+# anthropic==0.8.1           # Anthropic API (uncomment if needed)
+groq
+
+
+# ==================== WEB UI ====================
+# Frontend is served as static files by FastAPI (frontend/ directory)
+# gradio and streamlit are not needed
+
+# ==================== DATA PROCESSING ====================
+#pandas==2.1.4                # Data manipulation
+openpyxl==3.1.2             # Excel support
+python-multipart==0.0.6      # File uploads
+
+# ==================== LOGGING & MONITORING ====================
+loguru==0.7.2                # Advanced logging
+python-json-logger==2.0.7    # JSON logging
+# sentry-sdk==1.39.2         # Error tracking (uncomment for production)
+# prometheus-client==0.19.0  # Metrics (uncomment for production)
+
+# ==================== UTILITIES ====================
+python-dotenv==1.0.0         # Environment variables
+tenacity==8.2.3              # Retry logic
+cachetools==5.3.2            # Caching
+aiofiles==23.2.1             # Async file operations
+
+# ==================== SECURITY ====================
+python-jose[cryptography]==3.3.0  # JWT
+passlib[bcrypt]==1.7.4       # Password hashing
+# python-multipart for OAuth2 (already included above)
+
+# ==================== HTTP & NETWORKING ====================
+httpx>=0.25.2                # Async HTTP client
+requests==2.31.0             # Sync HTTP client
+websockets==12.0             # WebSocket support
+
+# ==================== VALIDATION & PARSING ====================
+email-validator==2.1.0       # Email validation
+python-dateutil==2.8.2       # Date parsing
+pyyaml==6.0.1               # YAML parsing
+
+# ==================== TESTING (Development) ====================
+# See requirements-dev.txt for test dependencies
